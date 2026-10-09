@@ -1,0 +1,6 @@
+Options -Indexes
+DirectoryIndex index.php
+AddDefaultCharset UTF-8
+
+# Proteger carpetas internas
+RedirectMatch 403 ^/?(.*/)?(config|includes|database)/

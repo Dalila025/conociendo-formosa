@@ -1,0 +1,16 @@
+# Datos privados: cada uno crea su config.php a partir de config.example.php
+config/config.php
+
+# Fotos subidas desde el panel
+uploads/**/*
+!uploads/.htaccess
+!uploads/**/.gitkeep
+!uploads/*/
+
+# Sistema / editores
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.zip
+diagnostico.php

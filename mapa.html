@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Conociendo Formosa - Mapa</title>
+
+    <link rel="stylesheet" href="css/estilo.css">
+</head>
+
+<body>
+
+    <header>
+
+        <h1>Conociendo Formosa</h1>
+
+        <p>Descubrí su naturaleza, cultura y territorio</p>
+
+    </header>
+
+
+    <main>
+
+        <section class="seccion-mapa">
+
+            <h2>Explorá Formosa</h2>
+
+            <p class="instruccion">
+                Hacé clic en los puntos violetas para descubrir
+                lugares, naturaleza y cultura de la provincia.
+            </p>
+
+
+            <!-- MAPA -->
+
+            <div class="mapa-contenedor">
+
+                <img 
+                    src="img/mapa-formosa.png"
+                    alt="Mapa de Formosa"
+                    class="mapa-imagen"
+                >
+
+
+                <!-- NOMBRES DE LOS DEPARTAMENTOS -->
+
+                <div class="departamento ramon-lista">
+                    RAMÓN LISTA
+                </div>
+
+                <div class="departamento matacos">
+                    MATACOS
+                </div>
+
+                <div class="departamento bermejo">
+                    BERMEJO
+                </div>
+
+                <div class="departamento patino">
+                    PATIÑO
+                </div>
+
+                <div class="departamento pilagas">
+                    PILAGÁS
+                </div>
+
+                <div class="departamento pilcomayo">
+                    PILCOMAYO
+                </div>
+
+                <div class="departamento formosa">
+                    FORMOSA
+                </div>
+
+                <div class="departamento pirane">
+                    PIRANÉ
+                </div>
+
+                <div class="departamento laishi">
+                    LAISHÍ
+                </div>
+
+
+                <!-- PUNTOS INTERACTIVOS -->
+
+                <!-- 1. Bañado La Estrella -->
+
+                <div 
+                    class="punto"
+                    data-lugar="banado"
+                    style="top: 35%; left: 45%;">
+                </div>
+
+
+                <!-- 2. Laguna Oca -->
+
+                <div 
+                    class="punto"
+                    data-lugar="laguna-oca"
+                    style="top: 72%; left: 67%;">
+                </div>
+
+
+                <!-- 3. Laguna Blanca -->
+
+                <div 
+                    class="punto"
+                    data-lugar="laguna-blanca"
+                    style="top: 45%; left: 62%;">
+                </div>
+
+
+                <!-- 4. Laguna Yema -->
+
+                <div 
+                    class="punto"
+                    data-lugar="laguna-yema"
+                    style="top: 27%; left: 36%;">
+                </div>
+
+
+                <!-- 5. Parque Nacional Río Pilcomayo -->
+
+                <div 
+                    class="punto"
+                    data-lugar="rio-pilcomayo"
+                    style="top: 57%; left: 70%;">
+                </div>
+
+
+                <!-- 6. Misión Laishí -->
+
+                <div 
+                    class="punto"
+                    data-lugar="mision-laishi"
+                    style="top: 82%; left: 64%;">
+                </div>
+
+
+                <!-- 7. Reserva Natural Formosa -->
+
+                <div 
+                    class="punto"
+                    data-lugar="reserva-formosa"
+                    style="top: 16.5%; left: 28%;">
+                </div>
+
+
+                <!-- 8. El Colorado -->
+
+                <div 
+                    class="punto"
+                    data-lugar="el-colorado"
+                    style="top: 69%; left: 51.5%;">
+                </div>
+
+
+                <!-- 9. Oeste Formoseño -->
+
+                <div 
+                    class="punto"
+                    data-lugar="oeste"
+                    style="top: 29%; left: 27.5%;">
+                </div>
+
+            </div>
+
+
+            <!-- LEYENDA -->
+
+            <div class="leyenda">
+
+                <div class="leyenda-item">
+
+                    <span class="leyenda-punto"></span>
+
+                    <span>Lugar interactivo</span>
+
+                </div>
+
+
+                <div class="leyenda-item">
+
+                    <span class="leyenda-departamento"></span>
+
+                    <span>Departamento</span>
+
+                </div>
+
+            </div>
+
+
+            <!-- PANEL DE INFORMACIÓN -->
+
+            <div id="info-panel" class="info-panel">
+
+                <button id="cerrar-panel" class="cerrar">
+                    ×
+                </button>
+
+
+                <img 
+                    id="imagen-lugar"
+                    src=""
+                    alt="Imagen del lugar"
+                >
+
+
+                <h2 id="titulo-lugar"></h2>
+
+
+                <p id="descripcion-lugar"></p>
+
+
+                <div class="dato-curioso">
+
+                    <strong>⭐ Dato curioso</strong>
+
+                    <p id="dato-lugar"></p>
+
+                </div>
+                <div class="pregunta">
+
+    <h3>🧠 ¿Qué aprendiste?</h3>
+
+    <p>
+        ¿Qué tipo de ambiente es el Bañado La Estrella?
+    </p>
+
+    <button class="opcion" data-correcta="false">
+        A. Un desierto
+    </button>
+
+    <button class="opcion" data-correcta="true">
+        B. Un humedal
+    </button>
+
+    <button class="opcion" data-correcta="false">
+        C. Una zona montañosa
+    </button>
+
+    <p id="resultado-pregunta"></p>
+
+</div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script src="js/script.js"></script>
+
+</body>
+
+</html>

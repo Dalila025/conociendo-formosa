@@ -1,0 +1,5 @@
+# Seguridad: no ejecutar scripts dentro de uploads
+Options -Indexes -ExecCGI
+<FilesMatch "\.(php|phtml|php\d|phar|pl|py|cgi|sh)$">
+    Require all denied
+</FilesMatch>
