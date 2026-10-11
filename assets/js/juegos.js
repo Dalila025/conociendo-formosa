@@ -133,19 +133,59 @@ App.juegos = (() => {
     const timeEl = document.querySelector('[data-memo="time"]');
     let abiertas = [], bloqueado = false, movs = 0, pares = 0, total = 0, seg = 0, timer = null, iniciado = false;
 
-    function start() {
-      const conFoto = App.data.lugares.filter((l) => App.img(l));
-      const elegidos = shuffle(conFoto).slice(0, 8);
-      total = elegidos.length;
-      if (total < 2) { grid.innerHTML = '<p class="text-muted">Cargá más fotos desde el panel para jugar.</p>'; return; }
-      const cartas = shuffle([...elegidos, ...elegidos]);
-      grid.innerHTML = cartas.map((l, i) => `
-        <button class="memo-card" data-id="${l.id}" style="animation:riseIn .5s ${i * 30}ms both" aria-label="Carta">
-          <div class="memo-face memo-back"><i class="fa-solid fa-sun"></i></div>
-          <div class="memo-face memo-front" style="background-image:url('${App.esc(App.img(l))}')"><span>${App.esc(l.nombre)}</span></div>
-        </button>`).join('');
-      abiertas = []; bloqueado = false; movs = 0; pares = 0; seg = 0; iniciado = false;
+    // Foto chica para las cartas (carga rápido en el celular)
+    const fotoChica = (u) => (u ? u.replace(/width=\d+/, 'width=420') : null);
+    const precargar = (url) => new Promise((ok) => {
+      const im = new Image(); let listo = false;
+      const fin = (v) => { if (!listo) { listo = true; ok(v); } };
+      im.onload = () => fin(true); im.onerror = () => fin(false);
+      setTimeout(() => fin(im.complete && im.naturalWidth > 0), 6000);
+      im.src = url;
+    });
+    // Reparte por turnos entre cultura, naturaleza y paseo para que queden mezcladas
+    function mezclarPorCategoria(lista) {
+      const grupos = {};
+      shuffle(lista).forEach((l) => { (grupos[l.categoria] ||= []).push(l); });
+      const colas = shuffle(Object.values(grupos)), out = [];
+      while (colas.some((c) => c.length)) colas.forEach((c) => { if (c.length) out.push(c.shift()); });
+      return out;
+    }
+    let partida = 0;
+
+    async function start() {
+      const miPartida = ++partida;
       clearInterval(timer); movEl.textContent = 0; timeEl.textContent = '0:00';
+      abiertas = []; bloqueado = false; movs = 0; pares = 0; seg = 0; iniciado = false;
+      grid.innerHTML = '<p class="memo-cargando"><i class="fa-solid fa-shuffle fa-beat"></i> Mezclando cartas…</p>';
+
+      // 1) Precargar fotos de lugares de las tres categorías
+      const candidatos = mezclarPorCategoria(App.data.lugares.filter((l) => App.img(l))).slice(0, 14);
+      const cargadas = await Promise.all(candidatos.map(async (l) => ({ l, url: fotoChica(App.img(l)), ok: await precargar(fotoChica(App.img(l))) })));
+      if (miPartida !== partida) return;   // tocaron «Nuevo juego» mientras cargaba
+      const conFoto = cargadas.filter((c) => c.ok);
+
+      // 2) Elegir 8 lugares mezclados; si faltan fotos, se completan con cartas ilustradas
+      let elegidos = mezclarPorCategoria(conFoto.map((c) => c.l)).slice(0, 8)
+        .map((l) => ({ l, url: conFoto.find((c) => c.l.id === l.id).url }));
+      if (elegidos.length < 8) {
+        const usados = new Set(elegidos.map((e) => e.l.id));
+        const resto = mezclarPorCategoria(App.data.lugares.filter((l) => !usados.has(l.id)));
+        elegidos = elegidos.concat(resto.slice(0, 8 - elegidos.length).map((l) => ({ l, url: null })));
+      }
+      total = elegidos.length;
+      if (total < 2) { grid.innerHTML = '<p class="text-muted">Cargá más lugares desde el panel para jugar.</p>'; return; }
+
+      const cartas = shuffle([...elegidos, ...elegidos]);
+      grid.innerHTML = cartas.map(({ l, url }, i) => {
+        const c = App.cat(l.categoria);
+        const frente = url
+          ? `<div class="memo-face memo-front" style="background-image:url('${App.esc(url)}');--c:${c.color}">`
+          : `<div class="memo-face memo-front sin-foto" style="--c:${c.color}"><i class="fa-solid ${c.icono} memo-ico"></i>`;
+        return `<button class="memo-card" data-id="${l.id}" style="animation:riseIn .5s ${i * 30}ms both" aria-label="Carta">
+          <div class="memo-face memo-back"><i class="fa-solid fa-sun"></i></div>
+          ${frente}<em class="memo-cat"><i class="fa-solid ${c.icono}"></i> ${App.esc(c.nombre)}</em><span>${App.esc(l.nombre)}</span></div>
+        </button>`;
+      }).join('');
     }
 
     grid.addEventListener('click', (e) => {
