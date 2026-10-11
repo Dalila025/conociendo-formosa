@@ -339,6 +339,8 @@ App.mapa = (() => {
     });
   }
   function elegirCategoria(cat) {
+    // Elegir «¿Qué querés conocer?» empieza de cero: se borra una búsqueda anterior (ej. «Nivaclé»)
+    if (state.q) { state.q = ''; $('#mapSearch').value = ''; }
     marcarCategoria(cat);
     cerrarPreview(); render();
     const n = visibles().length;
