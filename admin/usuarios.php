@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             try {
                 $pdo->prepare('INSERT INTO usuarios (nombre, usuario, password) VALUES (?,?,?)')->execute([$nombre, $usuario, password_hash($pass, PASSWORD_DEFAULT)]);
-                flash('success', "Usuario «$usuario» creado.");
+                flash('success', "Usuario {$usuario} creado.");
             } catch (PDOException $ex) {
                 flash('danger', 'Ese nombre de usuario ya existe.');
             }
